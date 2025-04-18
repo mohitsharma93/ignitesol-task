@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-[#f7f5fd]">
   <div class="px-4 py-6 sm:px-8 max-w-[1200px] mx-auto">
     <div
-      class="flex items-center gap-2 text-[#7A5AF8] font-semibold text-xl mb-4"
+      class="flex items-center gap-2 text-[#7A5AF8] font-montserrat font-semibold text-xl mb-4"
     >
       <button (click)="goBack()">
         <img src="assets/icons/Back.svg" alt="Clear" class="h-5 w-5" />
@@ -15,7 +15,7 @@
         type="text"
         placeholder="Search"
         [formControl]="searchControl"
-        class="w-full h-[40px] px-[10px] pl-10 pr-10 rounded-[4px] bg-white shadow-md outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#5E56E7] focus:border-[#5E56E7]"
+        class="font-montserrat font-semibold w-full h-[40px] px-[10px] pl-10 pr-10 rounded-[4px] bg-white shadow-md outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#5E56E7] focus:border-[#5E56E7]"
       />
     
       <!-- Clear (cross) icon at end -->
@@ -32,8 +32,8 @@
 
     @let rxError = rxBooks.error();
     @if (rxError) { <p>{{ rxError }}</p> }
-    @if (rxBooks.isLoading()) { <p>Loading Books...</p> }
-    @let bookLength = books().results?.length;
+    @let bookLength =( books().count ? books().results : []).length;
+    
     <!-- Book Grid with Virtual Scroll -->
     <div
       class="overflow-auto h-[calc(100vh-200px)]"
@@ -48,20 +48,23 @@
               <div class="w-[114px] h-[162px] rounded-lg shadow-[0_2px_5px_0_rgba(211,209,238,0.5)] overflow-hidden">
                 <img [src]="book.formats['image/jpeg']" alt="Book Cover" class="w-full h-full object-cover" />
               </div>
-              <p class="font-semibold mt-2 text-sm leading-tight">
+              <p class="mt-2 text-sm leading-tight font-montserrat font-semibold  ">
                 {{ book.title }}
               </p>
-              <p class="text-xs text-gray-500">{{ book.authors }}</p>
+              <p class="text-xs font-montserrat font-normal">{{ book.authors }}</p>
             </div>
           }
         </div>
-      <!-- Load More Trigger -->
-      
-      } @else if(!rxBooks.isLoading() && !bookLength) {
+      } @else if(!rxBooks.isLoading() && !bookLength && !rxError) {
         <div class="flex items-center justify-center h-screen w-full">
           There are no books related to title or author relate to {{this.searchControl.value}}.
         </div>
       }
+      <ng-container
+        [ngTemplateOutlet]="shimerLoader"
+      >
+
+      </ng-container>
       <div #loadTrigger class="h-10"></div>
     </div>
   </div>
@@ -76,3 +79,24 @@
 >
   No readable format found for this book.
 </div>
+
+<ng-template #shimerLoader>
+  @if (rxBooks.isLoading()) {
+    <div
+      class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-6 pb-10 justify-center"
+    >
+      @for (_ of [1, 2, 3, 4, 5, 6];  let idx = $index; track idx) {
+        <div class="flex flex-col items-start w-[114px] animate-pulse">
+          <!-- Skeleton Cover -->
+          <div class="w-[114px] h-[162px] rounded-lg bg-[#E6E6FA]"></div>
+  
+          <!-- Skeleton Title -->
+          <div class="h-4 mt-2 w-full rounded bg-[#E6E6FA]"></div>
+  
+          <!-- Skeleton Author -->
+          <div class="h-3 mt-1 w-3/4 rounded bg-[#E6E6FA]"></div>
+        </div>
+      }
+    </div>
+  }
+</ng-template>

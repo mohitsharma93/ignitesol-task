@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 import defaultTheme from 'tailwindcss/defaultTheme';
+import plugin from 'tailwindcss/plugin';
 
 const config: Config = {
   content: ['./src/**/*.{html,ts}'], // Angular-specific content scanning
@@ -39,7 +40,25 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function (base: any) {
+      const fonts = {
+        '@font-face': [
+          {
+            fontFamily: 'Montserrat',
+            fontWeight: '400',
+            src: 'url(/assets/fonts/Montserrat-Regular.ttf)',
+          },
+          {
+            fontFamily: 'Montserrat',
+            fontWeight: '600',
+            src: 'url(/assets/fonts/Montserrat-SemiBold.ttf)',
+          },
+        ]
+      };
+      base.addBase(fonts);
+    })
+  ],
 };
 
 export default config;

@@ -42,6 +42,7 @@ export class BooksComponent implements OnInit, AfterViewInit, OnDestroy {
   public queryParams: WritableSignal<any> = signal<any>(
     {}
   );
+  protected selectedBookUrl: string | null = null;
 
   protected books: WritableSignal<BooksResponseModel> = signal({} as BooksResponseModel);
 
@@ -89,13 +90,15 @@ export class BooksComponent implements OnInit, AfterViewInit, OnDestroy {
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: (value) => {
-        if(value.length){
+        console.log('value', value);
           this.books.set({} as BooksResponseModel);
+          const { search, ...rest } = this.queryParams();
           this.queryParams.set({
-            ...this.queryParams(),
-            search: value,
+            ...rest,
+            ...(value.length && {
+              search: value,
+            })
           })
-        }
       }
     })
   }
@@ -127,21 +130,9 @@ export class BooksComponent implements OnInit, AfterViewInit, OnDestroy {
     this.location.back();
   }
 
-
-  /**
-   * Clears the search input and removes the 'search' parameter from queryParams.
-   * This function sets the search input value to an empty string and updates the
-   * query parameters to exclude the 'search' key, effectively clearing any
-   * active search filters.
-   */
-
   protected clearSearch() {
     this.searchControl.setValue('');
-    const { search, ...rest } = this.queryParams();
-    this.queryParams.set(rest);
   }
-
-  selectedBookUrl: string | null = null;
 
   /**
    * Open a book in a new window or show a toast if the book only has zip format.
