@@ -1,5 +1,5 @@
 
-**Project Name:** Angular Book Search App
+**Project Name:** Gutenberg Project
 
 **Description:** This is an Angular-based web application that allows users to search for books by topic or author. The app uses a RESTful API to fetch book data and displays the results in a grid layout.
 
