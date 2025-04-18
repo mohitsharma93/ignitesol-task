@@ -1,0 +1,18 @@
+<div
+  *ngIf="bookUrl"
+  class="fixed inset-0 z-50 bg-black/50 flex items-center justify-center"
+>
+  <div class="bg-white rounded-lg shadow-lg max-w-5xl w-full h-[80vh] relative">
+    <button
+      (click)="closeModal()"
+      class="absolute top-2 right-2 bg-gray-200 rounded-full p-1 hover:bg-gray-300"
+    >
+      ✕
+    </button>
+    <iframe
+      [src]="bookUrl | safeUrl"
+      class="w-full h-full rounded-b-lg"
+      frameborder="0"
+    ></iframe>
+  </div>
+</div>

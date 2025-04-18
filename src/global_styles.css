@@ -1,0 +1,4 @@
+/* Add application styles & imports to this file! */
+@config "../tailwind.config.ts";
+
+@import 'tailwindcss';
