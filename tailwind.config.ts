@@ -47,12 +47,12 @@ const config: Config = {
           {
             fontFamily: 'Montserrat',
             fontWeight: '400',
-            src: 'url(/assets/fonts/Montserrat-Regular.ttf)',
+            src: 'url(/assets/fonts/Montserrat-Regular.ttf) format("truetype")',
           },
           {
             fontFamily: 'Montserrat',
             fontWeight: '600',
-            src: 'url(/assets/fonts/Montserrat-SemiBold.ttf)',
+            src: 'url(/assets/fonts/Montserrat-SemiBold.ttf) format("truetype")'
           },
         ]
       };
